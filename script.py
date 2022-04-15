@@ -23,20 +23,16 @@ def run():
 
 
 def get_daily_data(html, base_selector, selectors):
-    daily_data = {}
-    today = date.today()
-    today_date = today.strftime("%d-%b-%Y")
-    daily_data['date'] = today_date
-
     params = [html.xpath(base_selector + param_selector) for param_selector in selectors]
 
-    currency_data = []
-    for name, value, change_rate, change_amount in zip(*params):
-        currency_data.append({'name': name.strip(),
-                              'value': value.strip(),
-                              'change-rate': change_rate.strip(),
-                              'change-amount': change_amount.strip()})
-    daily_data['data'] = currency_data
+    currency_data = [{'name': name.strip(),
+                      'value': value.strip(),
+                      'change-rate': change_rate.strip(),
+                      'change-amount': change_amount.strip()}
+                     for name, value, change_rate, change_amount in zip(*params)]
+
+    today = date.today().strftime("%d-%b-%Y")
+    daily_data = {'date': today, 'data': currency_data}
     return daily_data
 
 
@@ -45,12 +41,13 @@ def write_json(json_data):
         file.seek(0, 2)
         if not file.tell():
             file.write(json.dumps([json_data], indent=4, ensure_ascii=False).encode())
-        else:
-            file.seek(-2, 2)
-            file.truncate()
-            json_string = ',\n' + json.dumps(json_data, indent=4, ensure_ascii=False)
-            json_string = '\t'.join(json_string.splitlines(True)) + '\n]'
-            file.write(json_string.encode())
+            return
+
+        file.seek(-2, 2)
+        file.truncate()
+        json_string = ',\n' + json.dumps(json_data, indent=4, ensure_ascii=False)
+        json_string = '\t'.join(json_string.splitlines(True)) + '\n]'
+        file.write(json_string.encode())
 
 
 def get_html():

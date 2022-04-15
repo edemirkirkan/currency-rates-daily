@@ -1,0 +1,108 @@
+[
+    {
+        "date": "16-Apr-2022",
+        "data": [
+            {
+                "name": "GRAM ALTIN",
+                "value": "928,90",
+                "change-rate": "%0,19",
+                "change-amount": "1,76"
+            },
+            {
+                "name": "DOLAR",
+                "value": "14,6513",
+                "change-rate": "%0,33",
+                "change-amount": "0,0482"
+            },
+            {
+                "name": "EURO",
+                "value": "15,8519",
+                "change-rate": "%0,00",
+                "change-amount": "0,0000"
+            },
+            {
+                "name": "STERLİN",
+                "value": "19,1651",
+                "change-rate": "%0,10",
+                "change-amount": "0,0191"
+            },
+            {
+                "name": "BIST 100",
+                "value": "2.494,37",
+                "change-rate": "%0,77",
+                "change-amount": "19,06"
+            },
+            {
+                "name": "BITCOIN",
+                "value": "$40.308,21",
+                "change-rate": "%1,45",
+                "change-amount": "$576,12"
+            },
+            {
+                "name": "GÜMÜŞ",
+                "value": "12,10",
+                "change-rate": "%0,37",
+                "change-amount": "0,04"
+            },
+            {
+                "name": "FAİZ",
+                "value": "22,26",
+                "change-rate": "%-0,98",
+                "change-amount": "-0,22"
+            }
+        ]
+    },
+	{
+	    "date": "16-Apr-2022",
+	    "data": [
+	        {
+	            "name": "GRAM ALTIN",
+	            "value": "928,90",
+	            "change-rate": "%0,19",
+	            "change-amount": "1,76"
+	        },
+	        {
+	            "name": "DOLAR",
+	            "value": "14,6513",
+	            "change-rate": "%0,33",
+	            "change-amount": "0,0482"
+	        },
+	        {
+	            "name": "EURO",
+	            "value": "15,8519",
+	            "change-rate": "%0,00",
+	            "change-amount": "0,0000"
+	        },
+	        {
+	            "name": "STERLİN",
+	            "value": "19,1651",
+	            "change-rate": "%0,10",
+	            "change-amount": "0,0191"
+	        },
+	        {
+	            "name": "BIST 100",
+	            "value": "2.494,37",
+	            "change-rate": "%0,77",
+	            "change-amount": "19,06"
+	        },
+	        {
+	            "name": "BITCOIN",
+	            "value": "$40.308,21",
+	            "change-rate": "%1,45",
+	            "change-amount": "$576,12"
+	        },
+	        {
+	            "name": "GÜMÜŞ",
+	            "value": "12,10",
+	            "change-rate": "%0,37",
+	            "change-amount": "0,04"
+	        },
+	        {
+	            "name": "FAİZ",
+	            "value": "22,26",
+	            "change-rate": "%-0,98",
+	            "change-amount": "-0,22"
+	        }
+	    ]
+	}
+]

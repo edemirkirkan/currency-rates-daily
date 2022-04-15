@@ -15,10 +15,7 @@ def run():
     change_rate_selector = '/div[contains(@class, "change-rate")]/text()'
     change_amount_selector = '/div[@class="change-amount"]/span/text()'
 
-    selectors = {'name': name_selector,
-                 'value': value_selector,
-                 'change-rate': change_rate_selector,
-                 'change-amount': change_amount_selector}
+    selectors = [name_selector, value_selector, change_rate_selector, change_amount_selector]
 
     html = get_html()
     daily_data = get_daily_data(html, base_selector, selectors)
@@ -31,24 +28,16 @@ def get_daily_data(html, base_selector, selectors):
     today_date = today.strftime("%d-%b-%Y")
     daily_data['date'] = today_date
 
-    names = html.xpath(base_selector + selectors['name'])
-    values = html.xpath(base_selector + selectors['value'])
-    change_rates = html.xpath(base_selector + selectors['change-rate'])
-    change_amounts = html.xpath(base_selector + selectors['change-amount'])
+    params = [html.xpath(base_selector + param_selector) for param_selector in selectors]
 
-    data_list = []
-    for i in range(len(names)):
-        data_list.append({'name': names[i].strip(),
-                          'value': values[i].strip(),
-                          'change-rate': change_rates[i].strip(),
-                          'change-amount': change_amounts[i].strip()})
-    daily_data['data'] = data_list
+    currency_data = []
+    for name, value, change_rate, change_amount in zip(*params):
+        currency_data.append({'name': name.strip(),
+                              'value': value.strip(),
+                              'change-rate': change_rate.strip(),
+                              'change-amount': change_amount.strip()})
+    daily_data['data'] = currency_data
     return daily_data
-
-
-def json_create():
-    with open(file='daily_currency.json', mode='w') as outfile:
-        json.dump([], outfile)
 
 
 def write_json(json_data):

@@ -1,26 +1,13 @@
 from requests_html import HTMLSession
-from datetime import datetime, timedelta, date
-from threading import Timer
-import time, json
+from datetime import date
+import json
 
 
 def main():
-    json_data = {'daily_rates':[]}
-
-    while True:
-        now = datetime.now()
-        run_at = now + timedelta(hours=0.01)
-        delay = (run_at - now).total_seconds()
-        Timer(delay, run(json_data)).start()
-        time.sleep(120)
+    run()
 
 
-def run(json_data):
-    update_json(json_data)
-    output_json(json_data)
-
-
-def update_json(json_data):
+def run():
     base_selector = '/html/body/header/div[@class="header-secondary"]/div[@class="header-container"]' \
                     '/div[@class="market-data"]/div[@class="item"]/a '
     name_selector = '/span[@class="name"]/text()'
@@ -28,22 +15,22 @@ def update_json(json_data):
     change_rate_selector = '/div[contains(@class, "change-rate")]/text()'
     change_amount_selector = '/div[@class="change-amount"]/span/text()'
 
-    selectors = {'name' : name_selector, 
-    'value' : value_selector, 
-    'change-rate' : change_rate_selector, 
-    'change-amount' : change_amount_selector}
+    selectors = {'name': name_selector,
+                 'value': value_selector,
+                 'change-rate': change_rate_selector,
+                 'change-amount': change_amount_selector}
 
     html = get_html()
-    daily_data = get_daily_json(html, base_selector, selectors)
-    json_data['daily_rates'].append(daily_data) 
+    daily_data = get_daily_data(html, base_selector, selectors)
+    write_json(daily_data)
 
 
-def get_daily_json(html, base_selector, selectors):
-    json = {}
+def get_daily_data(html, base_selector, selectors):
+    daily_data = {}
     today = date.today()
     today_date = today.strftime("%d-%b-%Y")
-    json['date'] = today_date
-    
+    daily_data['date'] = today_date
+
     names = html.xpath(base_selector + selectors['name'])
     values = html.xpath(base_selector + selectors['value'])
     change_rates = html.xpath(base_selector + selectors['change-rate'])
@@ -51,18 +38,30 @@ def get_daily_json(html, base_selector, selectors):
 
     data_list = []
     for i in range(len(names)):
-        data_list.append({'name' : names[i].strip(), 
-        'value': values[i].strip(), 
-        'change-rate' : change_rates[i].strip(), 
-        'change-amount' : change_amounts[i].strip()})
-    json['data'] = data_list
-    return json
+        data_list.append({'name': names[i].strip(),
+                          'value': values[i].strip(),
+                          'change-rate': change_rates[i].strip(),
+                          'change-amount': change_amounts[i].strip()})
+    daily_data['data'] = data_list
+    return daily_data
 
 
-def output_json(json_data):
-    json_string = json.dumps(json_data, indent=4, ensure_ascii=False)
-    with open('daily_currency.json', 'w') as outfile:
-        outfile.write(json_string)
+def json_create():
+    with open(file='daily_currency.json', mode='w') as outfile:
+        json.dump([], outfile)
+
+
+def write_json(json_data):
+    with open('daily_currency.json', 'ab+') as file:
+        file.seek(0, 2)
+        if not file.tell():
+            file.write(json.dumps([json_data], indent=4, ensure_ascii=False).encode())
+        else:
+            file.seek(-2, 2)
+            file.truncate()
+            json_string = ',\n' + json.dumps(json_data, indent=4, ensure_ascii=False)
+            json_string = '\t'.join(json_string.splitlines(True)) + '\n]'
+            file.write(json_string.encode())
 
 
 def get_html():

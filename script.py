@@ -1,7 +1,15 @@
 from requests_html import HTMLSession
+from datetime import datetime, timedelta
+from threading import Timer
+import time
 
 def main():
-    run()
+    while True:
+        now = datetime.now()
+        run_at = now + timedelta(hours=24)
+        delay = (run_at - now).total_seconds()
+        Timer(delay, run).start()
+        time.sleep(60)
 
 
 def run():

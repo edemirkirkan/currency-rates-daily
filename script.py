@@ -19,7 +19,10 @@ def run():
 
     html = get_html()
     daily_data = get_daily_data(html, base_selector, selectors)
-    write_json(daily_data)
+
+    dir_path = '/path/to/project/directory'
+    json_name = '/name/of/the/json/file/you/want'
+    write_json(daily_data, dir_path + json_name)
 
 
 def get_daily_data(html, base_selector, selectors):
@@ -36,8 +39,8 @@ def get_daily_data(html, base_selector, selectors):
     return daily_data
 
 
-def write_json(json_data):
-    with open('daily_currency.json', 'ab+') as file:
+def write_json(json_data, json_path):
+    with open(json_path, 'ab+') as file:
         file.seek(0, 2)
         if not file.tell():
             file.write(json.dumps([json_data], indent=4, ensure_ascii=False).encode())
